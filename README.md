@@ -1,2 +1,2 @@
-# gabsnotes.github.io
+# lgabannell.github.io
 Various notes
