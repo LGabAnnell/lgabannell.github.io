@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+</head>
+
+<body>
+    <div id="content"></div>
+    <div id="links"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const repo = 'lgabannell.github.io';
+            const user = 'lgabannell';
+            fetch(`https://api.github.com/repos/${user}/${repo}/git/trees/main`)
+                .then(result => result.json())
+                .then(result => result.tree
+                    .filter(obj => obj.path.endsWith(".md"))
+                    .filter(obj => !obj.path.startsWith("README"))
+                    .map(object => object.path))
+                .then(mdfiles => {
+                    const linksContainer = document.getElementById('links');
+                    mdfiles.forEach(file => {
+                        const link = document.createElement('a');
+                        link.href = file;
+                        link.textContent = file;
+                        linksContainer.appendChild(link);
+                        linksContainer.appendChild(document.createElement('br'));
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>
