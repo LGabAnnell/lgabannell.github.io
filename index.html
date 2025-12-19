@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Example</title>
+    <title>Personal notes</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
 </head>
 
@@ -14,6 +14,24 @@
     <div id="markdown-content"></div>
 
     <script>
+
+        function createMarkdownLink(file, linksContainer, content) {
+            const link = document.createElement('a');
+            link.href = `#`;
+            link.onclick = e => {
+                e.preventDefault();
+                fetch(file)
+                    .then(res => res.text())
+                    .then(md => {
+                        const html = marked.parse(md);
+                        content.innerHTML = html;
+                    });
+            };
+            link.textContent = file.replace('.md', '');
+            linksContainer.appendChild(link);
+            linksContainer.appendChild(document.createElement('br'));
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const repo = 'lgabannell.github.io';
             const user = 'lgabannell';
@@ -27,26 +45,9 @@
                 .then(mdfiles => {
                     const linksContainer = document.getElementById('links');
                     mdfiles.forEach(file => {
-                        console.log(file);
-                        const link = document.createElement('a');
-                        link.href = `#`;
-                        link.onclick = function (e) {
-                            e.preventDefault();
-                            fetch(`${file}`)
-                                .then(res => res.text())
-                                .then(md => {
-                                    const html = marked.parse(md);
-                                    content.innerHTML = html;
-                                });
-                        };
-                        link.textContent = file;
-                        linksContainer.appendChild(link);
-                        linksContainer.appendChild(document.createElement('br'));
+                        createMarkdownLink(file, linksContainer, content);
                     });
                 });
-
-
-
         });
     </script>
 </body>
