@@ -17,7 +17,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const repo = 'lgabannell.github.io';
             const user = 'lgabannell';
-            const content = document.getElementById('content');
+            const content = document.getElementById('markdown-content');
             fetch(`https://api.github.com/repos/${user}/${repo}/git/trees/main`)
                 .then(result => result.json())
                 .then(result => result.tree
@@ -36,7 +36,7 @@
                                 .then(res => res.text())
                                 .then(md => {
                                     const html = marked.parse(md);
-                                    cotent.innerHTML = html;
+                                    content.innerHTML = html;
                                 });
                         };
                         link.textContent = file;
