@@ -5,3 +5,15 @@ body {
 #markdown-content {
     min-height: 50vh;
 }
+
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+p {
+    line-height: 1;
+    margin-bottom: .5em;
+    margin-top: .5em;
+}

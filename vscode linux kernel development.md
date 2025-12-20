@@ -1,4 +1,4 @@
-## Configuring VSCode for linux kernel development
+# Configuring VSCode for linux kernel development
 
 Add `export kernelVersion="$(uname -r)"` to `~/.profile` and `~/.bashrc`.
 

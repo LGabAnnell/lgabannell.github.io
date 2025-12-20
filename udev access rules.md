@@ -1,4 +1,4 @@
-## Udev rules to manage peripherals through chrome/chromium
+# Udev rules to manage peripherals through chrome/chromium
 
 Type `lsusb | grep -i <your_device>` to find the device you're looking for
 
