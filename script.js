@@ -1,14 +1,17 @@
 function createMarkdownLink(file, linksContainer, content) {
     const link = document.createElement('a');
-    link.href = `#`;
+    const anchorId = file.replace('.md', '').replace(/\s+/g, '-').toLowerCase();
+    link.href = `#${anchorId}`;
     link.className = 'block p-2 rounded-md hover:bg-gray-100 text-gray-700';
     link.onclick = e => {
         e.preventDefault();
+        // Update the URL without reloading the page
+        history.pushState(null, null, `#${anchorId}`);
         fetch(file)
             .then(res => res.text())
             .then(md => {
                 const html = marked.parse(md);
-                content.innerHTML = html;
+                content.innerHTML = `<section id="${anchorId}">${html}</section>`;
                 addCodeSnippetStyling(); // Apply styling to code snippets after loading
             });
     };
@@ -127,5 +130,22 @@ document.addEventListener('DOMContentLoaded', function () {
             mdfiles.forEach(file => {
                 createMarkdownLink(file, linksContainer, content);
             });
+
+            // Check if the URL has an anchor and load the corresponding note
+            const hash = window.location.hash.substring(1); // Remove the '#' from the hash
+            if (hash) {
+                const matchingFile = mdfiles.find(file => {
+                    const anchorId = file.replace('.md', '').replace(/\s+/g, '-').toLowerCase();
+                    return anchorId === hash;
+                });
+
+                if (matchingFile) {
+                    // Simulate clicking the link to load the content
+                    const link = document.querySelector(`a[href="#${hash}"]`);
+                    if (link) {
+                        link.click();
+                    }
+                }
+            }
         });
 });

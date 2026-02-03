@@ -78,7 +78,12 @@ p {
     background-color: #0056b3;
 }
 
+/* Define a CSS variable for the link color with a fallback */
+:root {
+    --link-color: AccentColor;
+}
+
 a {
-    color: AccentColor;
+    color: var(--link-color, #003672); /* Fallback to #007bff if AccentColor is not supported */
     text-decoration: none;
 }
