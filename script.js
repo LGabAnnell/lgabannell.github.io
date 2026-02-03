@@ -9,6 +9,7 @@ function createMarkdownLink(file, linksContainer, content) {
             .then(md => {
                 const html = marked.parse(md);
                 content.innerHTML = html;
+                addCodeSnippetStyling(); // Apply styling to code snippets after loading
             });
     };
     link.textContent = file.replace('.md', '');
@@ -30,6 +31,81 @@ function filterLinks() {
     });
 }
 
+// Function to add styling and copy button to code snippets
+function addCodeSnippetStyling() {
+    // Process block code snippets (<pre><code>)
+    const blockCodeBlocks = document.querySelectorAll("pre code");
+
+    blockCodeBlocks.forEach((codeBlock) => {
+        // Skip if already processed
+        if (codeBlock.parentElement.classList.contains("code-snippet-container")) {
+            return;
+        }
+
+        // Create container div
+        const container = document.createElement("div");
+        container.className = "code-snippet-container";
+
+        // Create copy button
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button";
+        copyButton.textContent = "Copy";
+        copyButton.addEventListener("click", () => {
+            copyCodeToClipboard(codeBlock, copyButton);
+        });
+
+        // Wrap the code block in the container
+        codeBlock.parentElement.insertBefore(container, codeBlock);
+        container.appendChild(copyButton);
+        container.appendChild(codeBlock);
+    });
+
+    // Process inline code snippets (<code> not inside <pre>)
+    const inlineCodeBlocks = document.querySelectorAll("code:not(pre code)");
+
+    inlineCodeBlocks.forEach((codeBlock) => {
+        // Skip if already processed
+        if (codeBlock.parentElement.classList.contains("inline-code-snippet-container")) {
+            return;
+        }
+
+        // Create container div
+        const container = document.createElement("span");
+        container.className = "inline-code-snippet-container";
+
+        // Create copy button
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button-inline";
+        copyButton.textContent = "Copy";
+        copyButton.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent triggering parent elements
+            copyCodeToClipboard(codeBlock, copyButton);
+        });
+
+        // Wrap the code block in the container
+        codeBlock.parentElement.insertBefore(container, codeBlock);
+        container.appendChild(codeBlock);
+        container.appendChild(copyButton);
+    });
+}
+
+// Function to copy code to clipboard
+function copyCodeToClipboard(codeBlock, button) {
+    const code = codeBlock.textContent;
+    navigator.clipboard
+        .writeText(code)
+        .then(() => {
+            button.textContent = "Copied!";
+            setTimeout(() => {
+                button.textContent = "Copy";
+            }, 2000);
+        })
+        .catch((err) => {
+            console.error("Failed to copy code: ", err);
+        });
+}
+
+// Initialize the app
 document.addEventListener('DOMContentLoaded', function () {
     const repo = 'lgabannell.github.io';
     const user = 'lgabannell';
