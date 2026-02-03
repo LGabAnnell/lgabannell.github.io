@@ -85,5 +85,5 @@ p {
 
 a {
     color: var(--link-color, #003672); /* Fallback to #007bff if AccentColor is not supported */
-    text-decoration: none;
+    text-decoration: underline;
 }
