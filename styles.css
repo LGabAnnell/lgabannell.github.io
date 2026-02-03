@@ -77,3 +77,8 @@ p {
 .copy-button-inline:hover {
     background-color: #0056b3;
 }
+
+a {
+    color: AccentColor;
+    text-decoration: none;
+}
