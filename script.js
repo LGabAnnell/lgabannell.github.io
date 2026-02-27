@@ -95,8 +95,10 @@ function addCodeSnippetStyling() {
 // Function to copy code to clipboard
 function copyCodeToClipboard(codeBlock, button) {
     const code = codeBlock.textContent;
+    // Remove # or $ from the beginning of the text
+    const cleanedCode = code.replace(/^[$#]/, '');
     navigator.clipboard
-        .writeText(code)
+        .writeText(cleanedCode)
         .then(() => {
             button.textContent = "Copied!";
             setTimeout(() => {
